@@ -37,8 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'flickrapi',
-    'social_auth',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,19 +99,22 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
+SOCIAL_AUTH_FLICKR_KEY = '345f75b44303f45dd5356ee57b54df81'
+SOCIAL_AUTH_FLICKR_SECRET = '90aef24a6b3558ed'
+SOCIAL_AUTH_FLICKR_AUTH_EXTRA_ARGUMENTS = {'perms':'read'}
 
-FLICKR_APP_ID = '345f75b44303f45dd5356ee57b54df81'
-FLICKR_API_SECRET = '90aef24a6b3558ed'
-FLICKR_AUTH_EXTRA_ARGUMENTS = {'perms':'read'}
+SOCIAL_AUTH_LOGIN_URL          = '/login-form/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL    = '/login-error/'
 
-LOGIN_URL          = '/login-form/'
-LOGIN_REDIRECT_URL = '/'
-LOGIN_ERROR_URL    = '/login-error/'
 
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.contrib.flickr.FlickrBackend',
+    'social.backends.flickr.FlickrOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-api_key = u'345f75b44303f45dd5356ee57b54df81'
-api_secret = u'90aef24a6b3558ed'
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+)

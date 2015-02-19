@@ -6,7 +6,7 @@
 </head>
 <body>
 {% block main_container %}
-    <a href='{% url "socialauth_begin" "flickr" %}'>Authorization</a>
+    <a href='{% url 'social:begin' backend="flickr" %}'>Authorization</a>
 {% endblock %}
 </body>
 </html>

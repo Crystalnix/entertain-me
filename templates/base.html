@@ -5,6 +5,12 @@
     <title></title>
 </head>
 <body>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.get_username }}. <a href='{% url 'logout' %}'>Logout</a></p>
+{% else %}
+    <p>Welcome, new user. Please log in.</p>
+{% endif %}
 {% block main_container %}{% endblock%}
 </body>
 </html>
