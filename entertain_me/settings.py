@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     'flickrapi',
-    #'social_auth',
+    'social_auth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,38 +89,19 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-#
-# FLICKR_APP_ID = '345f75b44303f45dd5356ee57b54df81'
-# FLICKR_API_SECRET = '90aef24a6b3558ed'
-#
-# LOGIN_URL          = '/login-form/'
-# LOGIN_REDIRECT_URL = '/logged-in/'
-# LOGIN_ERROR_URL    = '/login-error/'
-#
-# AUTHENTICATION_BACKENDS = (
-#     'social_auth.backends.twitter.TwitterBackend',
-#     'social_auth.backends.facebook.FacebookBackend',
-#     'social_auth.backends.google.GoogleOAuthBackend',
-#     'social_auth.backends.google.GoogleOAuth2Backend',
-#     'social_auth.backends.google.GoogleBackend',
-#     'social_auth.backends.yahoo.YahooBackend',
-#     'social_auth.backends.browserid.BrowserIDBackend',
-#     'social_auth.backends.contrib.linkedin.LinkedinBackend',
-#     'social_auth.backends.contrib.disqus.DisqusBackend',
-#     'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-#     'social_auth.backends.contrib.orkut.OrkutBackend',
-#     'social_auth.backends.contrib.foursquare.FoursquareBackend',
-#     'social_auth.backends.contrib.github.GithubBackend',
-#     'social_auth.backends.contrib.vk.VKOAuth2Backend',
-#     'social_auth.backends.contrib.live.LiveBackend',
-#     'social_auth.backends.contrib.skyrock.SkyrockBackend',
-#     'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-#     'social_auth.backends.contrib.readability.ReadabilityBackend',
-#     'social_auth.backends.contrib.fedora.FedoraBackend',
-#     'social_auth.backends.OpenIDBackend',
-#     'social_auth.backends.contrib.flickr',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
+
+FLICKR_APP_ID = '345f75b44303f45dd5356ee57b54df81'
+FLICKR_API_SECRET = '90aef24a6b3558ed'
+FLICKR_AUTH_EXTRA_ARGUMENTS = {'perms':'read'}
+
+LOGIN_URL          = '/login-form/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL    = '/login-error/'
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.contrib.flickr.FlickrBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 api_key = u'345f75b44303f45dd5356ee57b54df81'
 api_secret = u'90aef24a6b3558ed'
