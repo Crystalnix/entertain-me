@@ -1,9 +1,8 @@
 {% include 'base.html' %}
 {%  block main_container %}
-Index page
     <div>
         {% for photo in photos %}
-            <img src="{{ photo.url }}" alt="qqq"/>
+            <img src="{{ photo }}" alt="qqq"/>
         {% endfor %}
     </div>
 {% endblock %}
