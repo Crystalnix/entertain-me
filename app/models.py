@@ -8,13 +8,10 @@ class Photo(models.Model):
     url = models.URLField()
 
 
-
-
 class User(models.Model):
     user_id = models.CharField(max_length=32)
     favorited = models.ManyToManyField(Photo, through='Liking')
-    last_get_faved = models.IntegerField(default=int(time()))
-
+    last_get_faved = models.IntegerField(default=0)
 
 
 class Liking(models.Model):

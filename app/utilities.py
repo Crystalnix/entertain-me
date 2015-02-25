@@ -6,6 +6,8 @@ def update_with_weight(d, l, my_favs):
         if int(photo['id']) in my_favs:
             matches += 1
     weight_k = float(matches)/len(l)
+    # if weight_k == 0: zero can be if photo from my_favs was not in query interval
+    #     pass
     for photo in l:
         if photo['id'] in d:
             d[photo['id']] += weight_k
