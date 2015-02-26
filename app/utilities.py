@@ -1,21 +1,21 @@
 __author__ = 'anmekin'
 
-def update_with_weight(d, l, my_favs):
+def update_with_weight(rec_photos, photos, my_favs):
+    if not photos:          # some photos can be empty
+        return rec_photos
     matches = 0
-    for photo in l:
+    for photo in photos:
         if int(photo['id']) in my_favs:
             matches += 1
-    weight_k = float(matches)/len(l)
-    # if weight_k == 0: zero can be if photo from my_favs was not in query interval
-    #     pass
-    for photo in l:
-        if photo['id'] in d:
-            d[photo['id']] += weight_k
+    weight_k = float(matches)/len(photos)
+    for photo in photos:
+        if photo['id'] in rec_photos:
+            rec_photos[photo['id']] += weight_k
         else:
-            d.update({photo['id']: weight_k})
-    return d
+            rec_photos.update({photo['id']: weight_k})
+    return rec_photos
 
-def choose_photo_URL(photo):
+def choose_photo_URL(photo): # has_key
     try:                            # ugly construction
         url = photo['url_l']
     except KeyError:
