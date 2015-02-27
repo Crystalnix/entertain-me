@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     'social.apps.django_app.default',
+    'djcelery',
+    'kombu.transport.django'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,13 +71,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -99,12 +94,14 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
+
+# Social_autth
 SOCIAL_AUTH_FLICKR_KEY = '345f75b44303f45dd5356ee57b54df81'
 SOCIAL_AUTH_FLICKR_SECRET = '90aef24a6b3558ed'
 SOCIAL_AUTH_FLICKR_AUTH_EXTRA_ARGUMENTS = {'perms':'read'}
 
 SOCIAL_AUTH_LOGIN_URL          = '/login-form/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/oauth_callback/'
 SOCIAL_AUTH_LOGIN_ERROR_URL    = '/login-error/'
 
 
@@ -118,3 +115,25 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
 )
+
+
+# Celery
+import djcelery
+
+from datetime import timedelta
+djcelery.setup_loader()
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERY_IMPORTS = ("app",)
+CELERYBEAT_SCHEDULE = {
+    'update_user': {
+        'task': 'tasks.update_flickr_user',
+        'schedule': timedelta(seconds=3),
+    },
+    'update_photo': {
+        'task': 'tasks.update_photo',
+        'schedule': timedelta(seconds=3),
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
