@@ -9,7 +9,7 @@
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.get_username }}. <a href='{% url 'logout' %}'>Logout</a></p>
 {% else %}
-    <p>Welcome, new user. Please log in.</p>
+    <p>Welcome, new user. Please <a href="{% url 'auth' %}">log in.</a></p>
 {% endif %}
 {% block main_container %}{% endblock%}
 </body>
