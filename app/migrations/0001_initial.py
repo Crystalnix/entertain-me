@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -14,7 +16,7 @@ class Migration(migrations.Migration):
             name='FlickrUser',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user_id', models.CharField(max_length=32)),
+                ('nsid', models.CharField(max_length=32)),
                 ('last_get_faved', models.IntegerField(default=0)),
             ],
             options={
@@ -25,7 +27,7 @@ class Migration(migrations.Migration):
             name='Liking',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('date_faved', models.DateTimeField()),
+                ('date_faved', models.DateTimeField(null=True)),
             ],
             options={
             },
@@ -36,7 +38,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigIntegerField(serialize=False, primary_key=True)),
                 ('owner', models.CharField(max_length=32)),
-                ('url', models.URLField()),
+                ('url', models.URLField(null=True)),
                 ('last_get_faved', models.IntegerField(default=0)),
             ],
             options={
@@ -59,6 +61,12 @@ class Migration(migrations.Migration):
             model_name='flickruser',
             name='favorited',
             field=models.ManyToManyField(to='app.Photo', through='app.Liking'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='flickruser',
+            name='user',
+            field=models.OneToOneField(null=True, to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]

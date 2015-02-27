@@ -2,18 +2,16 @@ __author__ = 'anmekin'
 from time import time
 from models import *
 from utilities import *
-import json
 import datetime
 
 
 def update_user_likes(api, user_id, min_fave_date=0):
-    user, created = FlickrUser.objects.get_or_create(user_id=user_id)
+    user, created = FlickrUser.objects.get_or_create(nsid=user_id)
     if user.last_get_faved and not min_fave_date:
         min_fave_date = user.last_get_faved
     photos = api.favorites.getList(user_id=user_id,
                                    min_fave_date=min_fave_date,
                                    extras='url_l, url_z, url_c')
-    photos = json.loads(photos)
     photos = photos["photos"]["photo"]
     for photo in photos:
         url = choose_photo_URL(photo)
@@ -26,10 +24,9 @@ def update_user_likes(api, user_id, min_fave_date=0):
 def get_who_liked_photo(api, photo, per_page=10):
     list_users = []
     users = api.photos.getFavorites(photo_id=photo.id, per_page=per_page)
-    users = json.loads(users)
     users = users['photo']['person']
     for user in users:
-        _user, created = FlickrUser.objects.get_or_create(user_id=user['nsid'])
+        _user, created = FlickrUser.objects.get_or_create(nsid=user['nsid'])
         dt = datetime.datetime.fromtimestamp(float(user['favedate']))
         liking, created = Liking.objects.get_or_create(photo=photo, user=_user, date_faved=dt)
         list_users.append(_user)
@@ -37,9 +34,8 @@ def get_who_liked_photo(api, photo, per_page=10):
 
 
 def get_user_likes(api, user):
-    photos = api.favorites.getList(user_id=user.user_id,
-                                   extras='url_l, url_z, url_c', per_page=10)
-    photos = json.loads(photos)
+    photos = api.favorites.getList(user_id=user.nsid,
+                                   extras='url_l, url_z, url_c', per_page=100)
     photos = photos["photos"]["photo"]
     for photo in photos:
         _photo, created = Photo.objects.get_or_create(id=int(photo['id']))
@@ -54,7 +50,7 @@ def get_user_likes(api, user):
 
 def get_recommended_users(api, my_id):
     rec_users = set()
-    my_favs = Photo.objects.filter(flickruser__user_id=my_id)
+    my_favs = Photo.objects.filter(flickruser__nsid=my_id)
     for photo in my_favs:
         users = get_who_liked_photo(api, photo)
         rec_users.update(users)
@@ -63,7 +59,7 @@ def get_recommended_users(api, my_id):
 
 def get_recommended_photos(api, rec_users, my_id):
     rec_photos = {}
-    my_favs = Photo.objects.filter(flickruser__user_id=my_id)
+    my_favs = Photo.objects.filter(flickruser__nsid=my_id)
     my_favs_ids = [x.id for x in my_favs]
     for user in rec_users:
         photos = get_user_likes(api, user)

@@ -36,8 +36,8 @@ def recomended(request):
     """
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
-    flickr = flickrapi.FlickrAPI(api_key, api_secret, format='json')
-    my_id = '130664317@N04'        # flickr nsid != request.user.username, should find him in user
+    flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
+    my_id = '130664317@N04'        # flickr nsid != request.user.username, should find it in user
 
     update_user_likes(flickr, my_id)
     rec_users = get_recommended_users(flickr, my_id)
@@ -52,3 +52,4 @@ def show_photos(request):
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
+

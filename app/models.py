@@ -10,15 +10,21 @@ class Photo(models.Model):
     url = models.URLField(null=True)
     last_get_faved = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.id
+
 class FlickrUser(models.Model):
-    user_id = models.CharField(max_length=32)
+    nsid = models.CharField(max_length=32)
     favorited = models.ManyToManyField(Photo, through='Liking')
     last_get_faved = models.IntegerField(default=0)
-    # user = models.OneToOneField(User) this field will brake everything, add him later
+    user = models.OneToOneField(User, null=True)
+
+    def __str__(self):
+        return self.nsid
 
 class Liking(models.Model):
     photo = models.ForeignKey(Photo)
     user = models.ForeignKey(FlickrUser)
-    date_faved = models.DateTimeField()
+    date_faved = models.DateTimeField(null=True)
 
 
