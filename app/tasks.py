@@ -6,17 +6,18 @@ from utilities import *
 import datetime
 import flickrapi
 import random
+import time
 
 @task(ignore_result=True, name='tasks.update_flickr_user')
 def update_flickr_user(min_fave_date=0):
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
-    try:
-        flickr_user = random.choice(FlickrUser.objects.all())
-    except IndexError:
-        print "List of users is Empty"
-        return
+    active_users = FlickrUser.objects.filter(user__isnull=False)
+    photos = Photo.objects.filter(flickruser__in=active_users)
+    users = FlickrUser.objects.filter(favorited__in=photos).\
+        distinct().order_by('last_get_faved')
+    flickr_user = users[0]
     print "I choose Flickr User with id: %s"% flickr_user.id
     # user = FlickrUser.objects.get(user_id=user_id)
     if flickr_user.last_get_faved and not min_fave_date:
@@ -25,7 +26,9 @@ def update_flickr_user(min_fave_date=0):
                                       min_fave_date=min_fave_date,
                                       per_page=100,
                                       extras='url_l, url_z, url_c')
-    if not photos.has_key('photos'):
+    flickr_user.last_get_faved = int(time.time())
+    flickr_user.save()
+    if 'photos' not in photos:
         return
     photos = photos["photos"]["photo"]
     for photo in photos:
@@ -47,14 +50,12 @@ def update_photo():
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
-    try:
-        photo = random.choice(Photo.objects.all())
-    except IndexError:
-        print "List of photo is Empty"
-        return
+    photos = Photo.objects.all().order_by('last_get_faved')
+    photo = photos[0]
     print "I choose photo with id: %s"% photo.id
-    #photo = Photo.objects.get(id=id)
     users = flickr.photos.getFavorites(photo_id=photo.id, per_page=100)
+    photo.last_get_faved = int(time.time())
+    photo.save()
     if not users.has_key('photo'):
         print 'Wrong photo_id'
         return
