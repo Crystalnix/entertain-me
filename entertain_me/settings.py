@@ -16,8 +16,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vro=eb!5^-_7^2373ii2tc)g5sad_&%oe=$mnk^h7apgbodia+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -60,17 +58,6 @@ WSGI_APPLICATION = 'entertain_me.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_db',
-        'USER': 'djangouser',
-        'PASSWORD': '888968',
-        'HOST': '',
-        'PORT': '',
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -96,9 +83,6 @@ TEMPLATE_DIRS = (
 
 
 # Social_autth
-SOCIAL_AUTH_FLICKR_KEY = '345f75b44303f45dd5356ee57b54df81'
-SOCIAL_AUTH_FLICKR_SECRET = '90aef24a6b3558ed'
-SOCIAL_AUTH_FLICKR_AUTH_EXTRA_ARGUMENTS = {'perms':'read'}
 
 SOCIAL_AUTH_LOGIN_URL          = '/login-form/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/oauth_callback/'
@@ -128,12 +112,17 @@ CELERY_IMPORTS = ("app",)
 CELERYBEAT_SCHEDULE = {
     'update_user': {
         'task': 'tasks.update_flickr_user',
-        'schedule': timedelta(seconds=3),
+        'schedule': timedelta(seconds=1),
     },
     'update_photo': {
         'task': 'tasks.update_photo',
-        'schedule': timedelta(seconds=3),
+        'schedule': timedelta(seconds=30),
     },
 }
 
 CELERY_TIMEZONE = 'UTC'
+
+try:
+    from local_settings import *
+except:
+    pass
