@@ -22,6 +22,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+SECRET_KEY = ''
+
 ALLOWED_HOSTS = []
 
 
@@ -37,7 +39,7 @@ INSTALLED_APPS = (
     'app',
     'social.apps.django_app.default',
     'djcelery',
-    'kombu.transport.django'
+    # 'kombu.transport.django'  # This package enables you to use the Django database as the message store
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,7 +59,12 @@ WSGI_APPLICATION = 'entertain_me.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -83,6 +90,9 @@ TEMPLATE_DIRS = (
 
 
 # Social_autth
+SOCIAL_AUTH_FLICKR_KEY = ''
+SOCIAL_AUTH_FLICKR_SECRET = ''
+SOCIAL_AUTH_FLICKR_AUTH_EXTRA_ARGUMENTS = {}
 
 SOCIAL_AUTH_LOGIN_URL          = '/login-form/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/oauth_callback/'
@@ -124,5 +134,5 @@ CELERY_TIMEZONE = 'UTC'
 
 try:
     from local_settings import *
-except:
+except ImportError:
     pass
