@@ -5,15 +5,31 @@ def update_with_weight(rec_photos, photos, my_favs):
         return rec_photos
     matches = 0
     for photo in photos:
-        if int(photo['id']) in my_favs:
+        if photo in my_favs:
             matches += 1
     weight_k = float(matches)/len(photos)
     for photo in photos:
-        if photo['id'] in rec_photos:
-            rec_photos[photo['id']] += weight_k
+        if photo.id in rec_photos:
+            rec_photos[photo.id] += weight_k
         else:
-            rec_photos.update({photo['id']: weight_k})
+            rec_photos.update({photo.id: weight_k})
     return rec_photos
+
+
+# def update_with_weight(rec_photos, photos, my_favs):
+#     if not photos:          # some photos can be empty
+#         return rec_photos
+#     matches = 0
+#     for photo in photos:
+#         if int(photo.id) in my_favs:
+#             matches += 1
+#     weight_k = float(matches)/len(photos)
+#     for photo in photos:
+#         if photo.id in rec_photos:
+#             rec_photos[photo['id']] += weight_k
+#         else:
+#             rec_photos.update({photo['id']: weight_k})
+#     return rec_photos
 
 def choose_photo_URL(photo): # has_key
     try:                            # ugly construction
