@@ -63,7 +63,7 @@ def get_recommended_photos(rec_users, my_id):
     my_favs = Photo.objects.filter(flickruser__nsid=my_id)
     for user in rec_users:
         #photos = get_user_likes(api, user)
-        photos = Photo.objects.filter(flickruser__nsid=user.id)
+        photos = Photo.objects.filter(flickruser__nsid=user.nsid)
         rec_photos = update_with_weight(rec_photos, photos, my_favs) # ATTENTION!!!
     rec_photos = sorted(rec_photos.items(), key=lambda(k, v): v, reverse=True)
     rec_photos = [photo[0] for photo in rec_photos]

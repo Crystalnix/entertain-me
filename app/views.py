@@ -53,8 +53,7 @@ def recomended(request):
     except IndexError:
         rec_photo = random.choice(Photo.objects.all()).url
         msg = "Sorry, we can't choose something for you. Keep the photo which can be like you"
-    print rec_photo
-    return render(request, 'recomended.html', {'photo': rec_photo, 'msg': msg})
+    return render(request, 'recomended.html', {'photo': rec_photo.url, 'msg': msg})
 
 
 def show_photos(request):
