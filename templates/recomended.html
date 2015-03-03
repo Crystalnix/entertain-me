@@ -1,8 +1,9 @@
 {% include 'base.html' %}
 {%  block main_container %}
     <div>
-        {% for photo in photos %}
-            <img src="{{ photo }}" alt="qqq"/>
-        {% endfor %}
+        <p>
+           {{ msg }}
+        </p>
+        <img src="{{ photo }}" alt="qqq"/>
     </div>
 {% endblock %}
