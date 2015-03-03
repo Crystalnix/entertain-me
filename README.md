@@ -1,6 +1,7 @@
 ##Prerequisites:##
 - Python 2.7
 - MySQL
+- RabbitMQ
 
 ##Dependencies: ##
 ``` 
@@ -18,6 +19,10 @@ $ deactivate new_env
 Installing MySQL:
 ```
 $ sudo apt-get install libmysqlclient-dev
+```
+Installing RabbitMQ:
+```
+$ sudo apt-get install rabbitmq-server
 ```
 Creating database:
 ``` 
@@ -44,4 +49,8 @@ First launch local server:
 ```
 $ python manage.py migrate
 $ python manage.py runserver
+```
+Run celery worker:
+```
+$ python manage.py celery worker --loglevel=DEBUG -B
 ```
