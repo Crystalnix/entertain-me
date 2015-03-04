@@ -9,4 +9,5 @@ urlpatterns = patterns('',
                        url(r'^photos', show_photos, name='show_fotos'),
                        url(r'^logout', logout, name='logout'),
                        url(r'^auth$', auth, name='auth'),
+                       url(r'^oauth_callback', oauth_callback, name='oauth_callback'),
                        )

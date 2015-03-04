@@ -41,19 +41,14 @@ def recomended(request):
     Algorithm which suggests photos to user based on user's likes
     and likes of people who also liked the same as user did
     """
-    api_key = settings.SOCIAL_AUTH_FLICKR_KEY
-    api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
-    flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
-    my_id = '130664317@N04'        # flickr nsid != request.user.username, should find it in user
-    rec_users = get_recommended_users(my_id)
-    rec_photos = get_recommended_photos(rec_users, my_id)
-    try:
-        rec_photo = rec_photos[0]
-        msg = "Recommended photo for you"
-    except IndexError:
-        rec_photo = random.choice(Photo.objects.all()).url
-        msg = "Sorry, we can't choose something for you. Keep the photo which can be like you"
-    return render(request, 'recomended.html', {'photo': rec_photo.url, 'msg': msg})
+    me = FlickrUser.objects.get(user=request.user)
+    my_favs = Photo.objects.filter(favorited=me)
+    reviewed = set(Photo.objects.filter(reviewed=me))
+    rec_users = get_recommended_users(me, my_favs)  # return QuerySet
+    rec_photos = get_recommended_photos(rec_users, my_favs, reviewed)
+    rec_photo = rec_photos[0]
+    review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
+    return render(request, 'recomended.html', {'photo': rec_photo})
 
 
 def show_photos(request):
