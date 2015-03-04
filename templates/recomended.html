@@ -1,9 +1,12 @@
 {% include 'base.html' %}
 {%  block main_container %}
-    <div>
+    <div class="container text-center">
         <p>
-           {{ photo.id }}
+           Photo identifier: {{ photo.id }}
         </p>
-        <img src="{{ photo.url }}" alt="qqq"/>
+        <img src="{{ photo.url }}" alt="Interest photo"/> <br/>
+        <div class="btn-group">
+            <button class="btn-primary">Show me MORE!</button>
+        </div>
     </div>
 {% endblock %}
