@@ -17,8 +17,12 @@ def update_flickr_user(min_fave_date=0):
     photos = Photo.objects.filter(favorited__in=active_users)
     users = FlickrUser.objects.filter(favorited__in=photos).\
         distinct().order_by('last_get_faved')
-    flickr_user = users[0]
-    print "I choose Flickr User with id: %s"% flickr_user.id
+    try:
+        flickr_user = users[0]
+    except IndexError:
+        print "Empty flickrUsers List"
+        return
+    print "I choose flickrUser with id: %s" % flickr_user.id
     # user = FlickrUser.objects.get(user_id=user_id)
     if flickr_user.last_get_faved and not min_fave_date:
         min_fave_date = flickr_user.last_get_faved
@@ -29,6 +33,7 @@ def update_flickr_user(min_fave_date=0):
     flickr_user.last_get_faved = int(time.time())
     flickr_user.save()
     if 'photos' not in photos:
+        print "Wrong response from Flickr"
         return
     photos = photos["photos"]["photo"]
     for photo in photos:
@@ -51,13 +56,17 @@ def update_photo():
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
     photos = Photo.objects.all().order_by('last_get_faved')
-    photo = photos[0]
+    try:
+        photo = photos[0]
+    except IndexError:
+        print "Empty photos list"
+        return
     print "I choose photo with id: %s"% photo.id
     users = flickr.photos.getFavorites(photo_id=photo.id, per_page=100)
     photo.last_get_faved = int(time.time())
     photo.save()
-    if not users.has_key('photo'):
-        print 'Wrong photo_id'
+    if 'photo' not in users:
+        print "Wrong response from Flickr"
         return
     users = users['photo']['person']
     for user in users:
