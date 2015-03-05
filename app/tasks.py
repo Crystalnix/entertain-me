@@ -14,7 +14,7 @@ def update_flickr_user(min_fave_date=0):
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
     active_users = FlickrUser.objects.filter(user__isnull=False)
-    photos = Photo.objects.filter(flickruser__in=active_users)
+    photos = Photo.objects.filter(favorited__in=active_users)
     users = FlickrUser.objects.filter(favorited__in=photos).\
         distinct().order_by('last_get_faved')
     flickr_user = users[0]
