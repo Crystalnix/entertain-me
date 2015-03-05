@@ -7,13 +7,11 @@
 ``` 
 $ pip install virtualenv 
 $ pip install virtualenvwrapper 
-$ mkvirtualenv new_env 
-$ workon new_env 
 $ export WORKON_HOME=$HOME/.virtualenvs
 $ source /usr/local/bin/virtualenvwrapper.sh
 $ source .bashrc
+$ mkvirtualenv new_env 
 $ pip install -r requirements.txt 
-$ deactivate new_env
 ```
 ##How to start:##
 Installing MySQL:
