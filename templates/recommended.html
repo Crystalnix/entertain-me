@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {%  block main_container %}
     <div class="container text-center">
+    {% if error_msg %}
+        <p> {{ error_msg }}</p>
+    {% else %}
         <p>
            Photo identifier: {{ photo.id }} (Yet that doesn't change)
         </p>
@@ -11,5 +14,6 @@
         <div class="btn-group">
             <button class="btn-primary" id="btn-next-img">Show me MORE!</button>
         </div>
+    {% endif %}
     </div>
 {% endblock %}

@@ -8,14 +8,18 @@ from django.contrib.auth.decorators import login_required
 
 from search_algorithm import *
 from models import *
+from tasks import update_flickr_user
 
+import time
+import flickrapi
 
 def oauth_callback(request):
     flickruser, created = FlickrUser.objects.get_or_create(nsid='130664317@N04')
                                             # flickr nsid != request.user.username, should find it in user
     if created:
         flickruser.user = request.user
-    print request.user.username
+        flickruser.save()
+    update_flickr_user(flickruser=flickruser)
     return HttpResponseRedirect('/')
 
 def home(request):
@@ -32,7 +36,13 @@ def recommended(request):
     reviewed = set(Photo.objects.filter(reviewed=me))
     rec_users = get_recommended_users(me, my_favs)  # return QuerySet
     rec_photos = get_recommended_photos(rec_users, my_favs, reviewed)
-    rec_photo = rec_photos[0]
+    try:
+        rec_photo = rec_photos[0]
+    except IndexError:
+        msg = "Photos not found. Probably you didn't like anything on Flickr. " \
+              "Try to like anything and reauthentication on this website. " \
+              "Also you can forget to run workers."
+        return render(request, 'recommended.html', {'error_msg': msg})
     review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
     if request.is_ajax():
         return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # +
@@ -47,6 +57,4 @@ def show_photos(request):
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
-
-
 
