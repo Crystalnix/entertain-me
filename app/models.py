@@ -12,7 +12,7 @@ class Photo(models.Model):
     last_get_faved = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class FlickrUser(models.Model):
@@ -23,7 +23,7 @@ class FlickrUser(models.Model):
     reviewed = models.ManyToManyField(Photo, through='Review', related_name='reviewed')
 
     def __str__(self):
-        return self.nsid
+        return str(self.nsid)
 
 
 class Liking(models.Model):
@@ -31,8 +31,14 @@ class Liking(models.Model):
     user = models.ForeignKey(FlickrUser)
     date_faved = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return "%s -> %s" % (self.user, self.photo.id)
+
 
 class Review(models.Model):
     photo = models.ForeignKey(Photo)
     user = models.ForeignKey(FlickrUser)
     date_review = models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return "%s -> %s" % (self.user, self.photo.id)
