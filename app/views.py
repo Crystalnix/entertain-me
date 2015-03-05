@@ -8,9 +8,6 @@ from django.contrib.auth.decorators import login_required
 
 from search_algorithm import *
 from models import *
-import json
-import flickrapi
-import random
 
 
 def auth(request):
@@ -25,18 +22,10 @@ def oauth_callback(request):
     return HttpResponseRedirect('/')
 
 def home(request):
-    api_key = settings.SOCIAL_AUTH_FLICKR_KEY
-    api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
-
-    flickr = flickrapi.FlickrAPI(api_key, api_secret, format='json')
-    photos = flickr.favorites.getList(user_id='130664317@N04',
-                                      per_page='10',
-                                      extras='url_m')
-
     return render(request, 'index.html')
 
 @login_required()
-def recomended(request):
+def recommended(request):
     """
     Algorithm which suggests photos to user based on user's likes
     and likes of people who also liked the same as user did
@@ -48,12 +37,15 @@ def recomended(request):
     rec_photos = get_recommended_photos(rec_users, my_favs, reviewed)
     rec_photo = rec_photos[0]
     review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
-    return render(request, 'recomended.html', {'photo': rec_photo})
+    if request.is_ajax():
+        return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # +
+    return render(request, 'recommended.html', {'photo': rec_photo})
 
 
 def show_photos(request):
     photos = Photo.objects.all()
     return render(request, 'index.html', {'photos': photos[0:5]})
+
 
 def logout(request):
     auth_logout(request)

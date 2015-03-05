@@ -1,0 +1,15 @@
+{% include 'base.html' %}
+{% load staticfiles %}
+{%  block main_container %}
+    <div class="container text-center">
+        <p>
+           Photo identifier: {{ photo.id }}
+        </p>
+        <div id="rec-photo">
+            <img src="{{ photo.url }}" alt="Interest photo"/> <br/>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" id="btn-next-img">Show me MORE!</button>
+        </div>
+    </div>
+{% endblock %}

@@ -3,15 +3,32 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Entertain me</title>
+    <link rel="stylesheet" href="{% static "app/css/bootstrap.min.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "app/css/main.css" %}" type="text/css">
+    <script type="text/javascript" src="http://coffeescript.org/extras/coffee-script.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+
 </head>
 <body>
+    <div class="container">
+    <nav class="navbar navbar-inverse" role="navigation">
 
-{% if user.is_authenticated %}
-    <p>Welcome, {{ user.get_username }}. <a href='{% url 'logout' %}'>Logout</a></p>
-{% else %}
-    <p>Welcome, new user. Please <a href="{% url 'auth' %}">log in.</a></p>
-{% endif %}
-{% block main_container %}{% endblock%}
+        <ul class="nav navbar-nav text-center">
+            {% if user.is_authenticated %}
+                <li>
+                     <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>
+                </li>
+            {% else %}
+                <li>
+                    <p>Welcome, new user. Please <a href="{% url 'auth' %}">log in.</a></p>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    </div>
+    {% block main_container %}{% endblock%}
+    <script type="text/coffeescript" src="{% static "app/cs/ajax.coffee" %}"></script>
 </body>
 </html>
