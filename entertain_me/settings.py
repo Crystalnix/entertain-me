@@ -94,6 +94,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
+LOGIN_URL = '/auth'
 
 # Social_autth
 SOCIAL_AUTH_FLICKR_KEY = ''

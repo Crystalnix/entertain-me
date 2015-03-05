@@ -13,20 +13,19 @@
 </head>
 <body>
     <div class="container">
-    <nav class="navbar navbar-inverse" role="navigation">
-
-        <ul class="nav navbar-nav text-center">
-            {% if user.is_authenticated %}
-                <li>
-                     <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>
-                </li>
-            {% else %}
-                <li>
-                    <p>Welcome, new user. Please <a href="{% url 'auth' %}">log in.</a></p>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <ul class="nav navbar-nav text-center">
+                {% if user.is_authenticated %}
+                    <li>
+                         <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href='{% url 'social:begin' backend="flickr" %}'>Authorization</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
     {% block main_container %}{% endblock%}
     <script type="text/coffeescript" src="{% static "app/cs/ajax.coffee" %}"></script>

@@ -10,9 +10,6 @@ from search_algorithm import *
 from models import *
 
 
-def auth(request):
-    return render(request, 'auth.html')
-
 def oauth_callback(request):
     flickruser, created = FlickrUser.objects.get_or_create(nsid='130664317@N04')
                                             # flickr nsid != request.user.username, should find it in user
