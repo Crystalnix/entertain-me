@@ -6,6 +6,10 @@
     <title>Entertain me</title>
     <link rel="stylesheet" href="{% static "app/css/bootstrap.min.css" %}" type="text/css">
     <link rel="stylesheet" href="{% static "app/css/main.css" %}" type="text/css">
+    <script type="text/javascript" src="http://coffeescript.org/extras/coffee-script.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+
 </head>
 <body>
     <div class="container">
@@ -25,5 +29,6 @@
     </nav>
     </div>
     {% block main_container %}{% endblock%}
+    <script type="text/coffeescript" src="{% static "app/cs/ajax.coffee" %}"></script>
 </body>
 </html>

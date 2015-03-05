@@ -48,12 +48,28 @@ def recomended(request):
     rec_photos = get_recommended_photos(rec_users, my_favs, reviewed)
     rec_photo = rec_photos[0]
     review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
+    if request.is_ajax():
+        str = "{'4':1,'a':2}"
+        return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # -
+        #return HttpResponse('<a href=#>Link</a>' , "text/html")            # +
+        #return HttpResponse('<a href=%s>Link</a>' % (rec_photo.url), "text/html") # +
     return render(request, 'recomended.html', {'photo': rec_photo})
 
+
+def test_ajax(request):
+    photo = Photo.objects.get(id=14148937246)
+    if request.is_ajax():
+        # str = "{'4':1,'a':2}"
+        #return HttpResponse('<img href=%s>/>' % rec_photo, "text/html")    # -
+        #return HttpResponse('<a href=#>Link</a>' , "text/html")            # +
+        link = "http://ya.ru"
+        str='<a href=%s>Link</a>' % (photo.url)
+        return HttpResponse(str, "text/html")
 
 def show_photos(request):
     photos = Photo.objects.all()
     return render(request, 'index.html', {'photos': photos[0:5]})
+
 
 def logout(request):
     auth_logout(request)
