@@ -10,7 +10,7 @@ jQuery ->
 #  $('#test').click(
     ->
       # function one content
-      $.ajax '/test',
+      $.ajax '/get_photo',
                type: 'GET'
                dataType: 'html'
                error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
