@@ -14,19 +14,8 @@ jQuery ->
                type: 'GET'
                dataType: 'html'
                error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
-               success: (data, textStatus, jqXHR) -> $('#rec-photo').append data
-  )
-  $('#test').click(
-    ->
-#      alert 'JQuery alert'
-#      $('#test_coffee').text("Some text")
-      $.ajax '/testa',
-               type: 'GET'
-               dataType: 'html'
-               error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
-               success: (data, textStatus, jqXHR) -> $('body').append "Successful AJAX call: #{data}"
+               success: (data, textStatus, jqXHR) -> $('#rec-photo').html data
   )
 
-
-alert "DOM is ready"
+# alert "DOM is ready" # for syntax test
 
