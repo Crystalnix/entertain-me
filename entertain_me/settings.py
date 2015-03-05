@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'djcelery',
     'debug_toolbar',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,7 +95,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-LOGIN_URL = '/auth'
+LOGIN_URL = '/'
 
 # Social_autth
 SOCIAL_AUTH_FLICKR_KEY = ''
@@ -142,6 +143,10 @@ CELERY_TIMEZONE = 'UTC'
 # django_debug_toolbar
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 INTERNAL_IPS = ('127.0.0.1',)
+
+# nose
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
 
 try:
     from local_settings import *
