@@ -9,29 +9,30 @@ import random
 import time
 
 @task(ignore_result=True, name='tasks.update_flickr_user')
-def update_flickr_user(min_fave_date=0):
+def update_flickr_user(min_fave_date=0, flickruser=None):
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
     active_users = FlickrUser.objects.filter(user__isnull=False)
-    photos = Photo.objects.filter(favorited__in=active_users)
-    users = FlickrUser.objects.filter(favorited__in=photos).\
-        distinct().order_by('last_get_faved')
-    try:
-        flickr_user = users[0]
-    except IndexError:
-        print "Empty flickrUsers List"
-        return
-    print "I choose flickrUser with id: %s" % flickr_user.id
+    if flickruser is None:
+        photos = Photo.objects.filter(favorited__in=active_users)
+        users = FlickrUser.objects.filter(favorited__in=photos).\
+            distinct().order_by('last_get_faved')
+        try:
+            flickruser = users[0]
+        except IndexError:
+            print "Empty flickrUsers List"
+            return
+    print "I choose flickrUser with id: %s" % flickruser.id
     # user = FlickrUser.objects.get(user_id=user_id)
-    if flickr_user.last_get_faved and not min_fave_date:
-        min_fave_date = flickr_user.last_get_faved
-    photos = flickr.favorites.getList(user_id=flickr_user.nsid,
+    if flickruser.last_get_faved and not min_fave_date:
+        min_fave_date = flickruser.last_get_faved
+    photos = flickr.favorites.getList(user_id=flickruser.nsid,
                                       min_fave_date=min_fave_date,
                                       per_page=100,
                                       extras='url_l, url_z, url_c')
-    flickr_user.last_get_faved = int(time.time())
-    flickr_user.save()
+    flickruser.last_get_faved = int(time.time())
+    flickruser.save()
     if 'photos' not in photos:
         print "Wrong response from Flickr"
         return
@@ -44,7 +45,7 @@ def update_flickr_user(min_fave_date=0):
             _photo.url = url
             _photo.save()
         dt = datetime.datetime.fromtimestamp(float(photo['date_faved']))
-        liking, created = Liking.objects.get_or_create(photo=_photo, user=flickr_user)
+        liking, created = Liking.objects.get_or_create(photo=_photo, user=flickruser)
         if created:
             liking.date_faved = dt
             liking.save()
