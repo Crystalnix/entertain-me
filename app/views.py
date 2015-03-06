@@ -9,13 +9,15 @@ from django.contrib.auth.decorators import login_required
 from search_algorithm import *
 from models import *
 from tasks import update_flickr_user
-from social.storage.django_orm import DjangoUserMixin
 import time
 import flickrapi
 
 def oauth_callback(request):
-    flickruser, created = FlickrUser.objects.get_or_create(
-        nsid=DjangoUserMixin.get_social_auth_for_user(request.user)[0].uid)
+    try:
+        nsid = request.user.social_auth.first().uid
+    except AttributeError:
+        return HttpResponse("Unknown Flickr account")
+    flickruser, created = FlickrUser.objects.get_or_create(nsid=nsid)
     if created:
         flickruser.user = request.user
         flickruser.save()
