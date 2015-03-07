@@ -21,9 +21,9 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
         try:
             flickruser = users[0]
         except IndexError:
-            print "Empty flickrUsers List"
-            return
-    print "I choose flickrUser with id: %s" % flickruser.id
+            raise RuntimeError("Empty flickrUsers list")
+
+    print "I choose flickrUser with id: %s" % flickruser.nsid
     # user = FlickrUser.objects.get(user_id=user_id)
     if flickruser.last_get_faved and not min_fave_date:
         min_fave_date = flickruser.last_get_faved
@@ -34,8 +34,7 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
     flickruser.last_get_faved = int(time.time())
     flickruser.save()
     if 'photos' not in photos:
-        print "Wrong response from Flickr"
-        return
+        raise RuntimeError("Wrong Flickr response")
     photos = photos["photos"]["photo"]
     for photo in photos:
         _photo, created = Photo.objects.get_or_create(id=int(photo['id']))
@@ -60,15 +59,13 @@ def update_photo():
     try:
         photo = photos[0]
     except IndexError:
-        print "Empty photos list"
-        return
+        raise RuntimeError("Empty photos list")
     print "I choose photo with id: %s"% photo.id
     users = flickr.photos.getFavorites(photo_id=photo.id, per_page=100)
     photo.last_get_faved = int(time.time())
     photo.save()
     if 'photo' not in users:
-        print "Wrong response from Flickr"
-        return
+        raise RuntimeError("Wrong Flickr response")
     users = users['photo']['person']
     for user in users:
         _user, created = FlickrUser.objects.get_or_create(nsid=user['nsid'])
