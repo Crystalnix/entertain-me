@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
-from search_algorithm import *
+import search_algorithm as sa
 from models import *
 from tasks import update_flickr_user
 import time
@@ -36,8 +36,8 @@ def recommended(request):
     me = FlickrUser.objects.get(user=request.user)
     my_favs = Photo.objects.filter(favorited=me)
     reviewed = set(Photo.objects.filter(reviewed=me))
-    rec_users = get_recommended_users(me, my_favs)  # return QuerySet
-    rec_photos = get_recommended_photos(rec_users, my_favs, reviewed)
+    rec_users = sa.get_recommended_users(me, my_favs)
+    rec_photos = sa.get_recommended_photos(rec_users, my_favs, reviewed)
     try:
         rec_photo = rec_photos[0]
     except IndexError:
@@ -47,13 +47,8 @@ def recommended(request):
         return render(request, 'recommended.html', {'error_msg': msg})
     review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
     if request.is_ajax():
-        return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # +
+        return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # should return json
     return render(request, 'recommended.html', {'photo': rec_photo})
-
-
-def show_photos(request):
-    photos = Photo.objects.all()
-    return render(request, 'index.html', {'photos': photos[0:5]})
 
 
 def logout(request):

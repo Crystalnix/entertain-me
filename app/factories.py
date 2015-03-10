@@ -6,7 +6,7 @@ from datetime import datetime
 import unittest
 
 
-class FlickrUserFactory(factory.Factory):
+class FlickrUserFactory(factory.DjangoModelFactory):
     class Meta:
         model = FlickrUser
 
@@ -15,7 +15,7 @@ class FlickrUserFactory(factory.Factory):
     user = None
 
 
-class PhotoFactory(factory.Factory):
+class PhotoFactory(factory.DjangoModelFactory):
     class Meta:
         model = Photo
     id = factory.Sequence(lambda n: n)
@@ -23,14 +23,14 @@ class PhotoFactory(factory.Factory):
     url = None
     last_get_faved = 0
 
-class LikingFactory(factory.Factory):
+class LikingFactory(factory.DjangoModelFactory):
     class Meta:
         model = Liking
     user = factory.SubFactory(FlickrUserFactory)
     photo = factory.SubFactory(PhotoFactory)
     date_faved = datetime.now()
 
-class ReviewFactory(factory.Factory):
+class ReviewFactory(factory.DjangoModelFactory):
     class Meta:
         model = Review
 
@@ -39,5 +39,5 @@ class ReviewFactory(factory.Factory):
     date_review = datetime.now()
 
 class MTMFlickrUserFactory(FlickrUserFactory):
-    favorited = factory.RelatedFactory(LikingFactory, 'flickruser')
-    reviewed = factory.RelatedFactory(ReviewFactory, 'flickruser')
+    favorited = factory.RelatedFactory(LikingFactory, 'user')
+    reviewed = factory.RelatedFactory(ReviewFactory, 'user')
