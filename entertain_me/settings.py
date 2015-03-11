@@ -130,11 +130,11 @@ CELERY_IMPORTS = ("app",)
 CELERYBEAT_SCHEDULE = {
     'update_user': {
         'task': 'tasks.update_flickr_user',
-        'schedule': timedelta(seconds=1),
+        'schedule': timedelta(seconds=2),
     },
     'update_photo': {
         'task': 'tasks.update_photo',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=2),
     },
 }
 
