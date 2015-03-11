@@ -4,22 +4,6 @@ from utilities import *
 import datetime
 
 
-def update_user_likes(api, user_id, min_fave_date=0):
-    user, created = FlickrUser.objects.get_or_create(nsid=user_id)
-    if user.last_get_faved and not min_fave_date:
-        min_fave_date = user.last_get_faved
-    photos = api.favorites.getList(user_id=user_id,
-                                   min_fave_date=min_fave_date,
-                                   extras='url_l, url_z, url_c')
-    photos = photos["photos"]["photo"]
-    for photo in photos:
-        url = choose_photo_URL(photo)
-        _photo, created = Photo.objects.get_or_create(id=int(photo['id']),
-                                                      owner=photo['owner'], url=url)
-        dt = datetime.datetime.fromtimestamp(float(photo['date_faved']))
-        liking, created = Liking.objects.get_or_create(photo=_photo, user=user, date_faved=dt)
-
-
 def get_recommended_users(me, my_favs):
     users = FlickrUser.objects.filter(favorited__in=my_favs).distinct().exclude(user=me.user)
     return users

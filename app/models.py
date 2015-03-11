@@ -42,3 +42,12 @@ class Review(models.Model):
 
     def __str__(self):
         return "%s -> %s" % (self.user, self.photo.id)
+
+
+class Weight(models.Model):
+    against = models.ForeignKey(FlickrUser, related_name='against')
+    to = models.ForeignKey(FlickrUser, related_name='to')
+    weight = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "%s -> %s = %d" % (self.against, self.to, self.weight)
