@@ -5,10 +5,8 @@
     {% if error_msg %}
         <p> {{ error_msg }}</p>
     {% else %}
-        <p>
-           Photo identifier: {{ photo.id }} (Yet that doesn't change)
-        </p>
         <div id="rec-photo">
+            <p>Photo identifier: {{ photo.id }}</p>
             <img src="{{ photo.url }}" alt="Interest photo"/> <br/>
         </div>
         <div class="btn-group">

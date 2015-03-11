@@ -156,7 +156,7 @@ INTERNAL_IPS = ('127.0.0.1',)
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # compressor
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
