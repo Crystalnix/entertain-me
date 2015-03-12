@@ -2,4 +2,7 @@
 *.py[cod]
 *~
 *.sqlite3
+*.coverage
+freeze.txt
+staticfiles/
 local_settings.py

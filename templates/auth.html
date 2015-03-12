@@ -1,0 +1,14 @@
+{% include 'base.html' %}
+{% block main_container %}
+    <div class="container text-center">
+        {% if user.is_authenticated %}
+            <p>
+                <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>
+            </p>
+        {% else %}
+            <p>
+                For viewing interest photos you must be <a href='{% url 'social:begin' backend="flickr" %}'>authorized</a>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

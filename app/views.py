@@ -2,6 +2,7 @@
 Module for views
 """
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,7 @@ from models import *
 from tasks import update_flickr_user
 import time
 import flickrapi
+import json
 
 def oauth_callback(request):
     try:
@@ -23,9 +25,6 @@ def oauth_callback(request):
         flickruser.save()
     update_flickr_user(flickruser=flickruser)
     return HttpResponseRedirect('/')
-
-def home(request):
-    return render(request, 'index.html')
 
 @login_required()
 def recommended(request):
@@ -47,9 +46,13 @@ def recommended(request):
         return render(request, 'recommended.html', {'error_msg': msg})
     review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
     if request.is_ajax():
-        return HttpResponse('<img src=%s/>' % rec_photo.url, "text/html")    # should return json
+        response = {'url': rec_photo.url, 'id': rec_photo.id}
+        return JsonResponse(response)    # should return json
     return render(request, 'recommended.html', {'photo': rec_photo})
 
+
+def auth(request):
+    return render(request, 'auth.html')
 
 def logout(request):
     auth_logout(request)

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load compress %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -28,6 +29,8 @@
         </nav>
     </div>
     {% block main_container %}{% endblock%}
+    {% compress js %}
     <script type="text/coffeescript" src="{% static "app/cs/ajax.coffee" %}"></script>
+    {%  endcompress %}
 </body>
 </html>

@@ -1,20 +1,13 @@
-#$(document).ready ->
-#        $.ajax '/test',
-#               type: 'GET'
-#               dataType: 'json'
-#               error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
-#               success: (data, textStatus, jqXHR) -> $('body').append "Successful AJAX call: #{data}"
-
 jQuery ->
   $('#btn-next-img').click(
-#  $('#test').click(
     ->
-      # function one content
-      $.ajax '/get_photo',
+      $.ajax '/',
                type: 'GET'
-               dataType: 'html'
+               dataType: 'json'
                error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
-               success: (data, textStatus, jqXHR) -> $('#rec-photo').html data
+               success: (data, textStatus, jqXHR) ->
+                 $('#rec-photo p').text('Photo identifier: '+ data['id'])
+                 $('#rec-photo img').attr('src', data['url'])
   )
 
 # alert "DOM is ready" # for syntax test

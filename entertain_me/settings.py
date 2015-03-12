@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'djcelery',
     'debug_toolbar',
     'django_nose',
+    'compressor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,21 +91,28 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-LOGIN_URL = '/'
+LOGIN_URL = '/auth/'
 
 # Social_autth
 SOCIAL_AUTH_FLICKR_KEY = ''
 SOCIAL_AUTH_FLICKR_SECRET = ''
 SOCIAL_AUTH_FLICKR_AUTH_EXTRA_ARGUMENTS = {}
 
-SOCIAL_AUTH_LOGIN_URL          = '/login-form/'
+SOCIAL_AUTH_LOGIN_URL = '/login-form/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/oauth_callback/'
-SOCIAL_AUTH_LOGIN_ERROR_URL    = '/login-error/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
 
 AUTHENTICATION_BACKENDS = (
@@ -130,11 +138,11 @@ CELERY_IMPORTS = ("app",)
 CELERYBEAT_SCHEDULE = {
     'update_user': {
         'task': 'tasks.update_flickr_user',
-        'schedule': timedelta(seconds=1),
+        'schedule': timedelta(seconds=2),
     },
     'update_photo': {
         'task': 'tasks.update_photo',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=2),
     },
 }
 
@@ -146,8 +154,19 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 # nose
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=app',
+]
+
+# compressor
+COMPRESS_ENABLED = False
+COMPRESS_PRECOMPILERS = (
+    ('text/coffeescript', 'coffee --compile --stdio'),
+)
 
 
+#
 try:
     from local_settings import *
 except ImportError:
