@@ -1,10 +1,7 @@
 from django.test import TestCase, Client
-import nose.tools as nt
-from utilities import update_with_weight
 from factories import *
 import search_algorithm as sa
-import unittest
-import flickrapi
+import json
 from tasks import *
 from mocks import *
 import mock
@@ -170,5 +167,6 @@ class ViewTestCase(TestCase):
         with mock.patch('app.search_algorithm.get_recommended_photos') as perm_mock:
             perm_mock.return_value = [photo]
             response = c.get('/get_photo/', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = json.loads(response.content)
         reviewed = Photo.objects.filter(reviewed=me)
-        self.assertEqual(response.content, '<img src=http://google.com/>')
+        self.assertEqual(response['id'], 1)
