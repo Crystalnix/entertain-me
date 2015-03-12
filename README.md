@@ -2,6 +2,7 @@
 - Python 2.7
 - MySQL
 - RabbitMQ
+- Coffeescript
 
 ##Dependencies: ##
 ``` 
@@ -21,6 +22,10 @@ $ sudo apt-get install libmysqlclient-dev
 Installing RabbitMQ:
 ```
 $ sudo apt-get install rabbitmq-server
+```
+Installing Coffeescript:
+```
+$ sudo apt-get install coffeescript
 ```
 Creating database:
 ``` 
