@@ -52,3 +52,7 @@ Run celery worker:
 ```
 $ python manage.py celery worker --loglevel=DEBUG -B
 ```
+Run tests with coverage:
+```
+$ python manage.py test --with-coverage
+```
