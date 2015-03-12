@@ -154,12 +154,17 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 # nose
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=app',
+]
 
 # compressor
 COMPRESS_ENABLED = False
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
+
 
 #
 try:
