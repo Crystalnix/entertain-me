@@ -26,9 +26,6 @@ def oauth_callback(request):
     update_flickr_user(flickruser=flickruser)
     return HttpResponseRedirect('/')
 
-def home(request):
-    return render(request, 'index.html')
-
 @login_required()
 def recommended(request):
     """
@@ -53,6 +50,9 @@ def recommended(request):
         return JsonResponse(response)    # should return json
     return render(request, 'recommended.html', {'photo': rec_photo})
 
+
+def auth(request):
+    return render(request, 'auth.html')
 
 def logout(request):
     auth_logout(request)

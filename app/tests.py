@@ -17,9 +17,9 @@ class UnloggedTestCase(TestCase):
 
     def test_unlogged_get_photo(self):
         c = Client()
-        response = c.get('/get_photo/', follow=True)
+        response = c.get('/', follow=True)
         print response.redirect_chain
-        self.assertRedirects(response, "/?next=/get_photo/")
+        self.assertRedirects(response, "auth/?next=/")
 
 
 class FlickrTasksCase(TestCase):
@@ -140,7 +140,7 @@ class ViewTestCase(TestCase):
         with mock.patch('app.search_algorithm') as perm_mock:
             perm_mock.get_recommended_users.return_value = []
             perm_mock.get_recommended_photos.return_value = []
-        response = c.get('/get_photo/')
+        response = c.get('/')
         self.assertContains(response, "Photos not found.")
 
 
@@ -152,7 +152,7 @@ class ViewTestCase(TestCase):
         c.login(username='test', password='pwd')
         with mock.patch('app.search_algorithm.get_recommended_photos') as perm_mock:
             perm_mock.return_value = [photo]
-            response = c.get('/get_photo/')
+            response = c.get('/')
         reviewed = Photo.objects.filter(reviewed=me)
         self.assertEqual(len(reviewed), 1)
 
@@ -166,7 +166,7 @@ class ViewTestCase(TestCase):
         c.login(username='test', password='pwd')
         with mock.patch('app.search_algorithm.get_recommended_photos') as perm_mock:
             perm_mock.return_value = [photo]
-            response = c.get('/get_photo/', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+            response = c.get('/', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         response = json.loads(response.content)
         reviewed = Photo.objects.filter(reviewed=me)
         self.assertEqual(response['id'], 1)

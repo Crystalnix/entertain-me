@@ -1,7 +1,7 @@
 jQuery ->
   $('#btn-next-img').click(
     ->
-      $.ajax '/get_photo',
+      $.ajax '/',
                type: 'GET'
                dataType: 'json'
                error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
