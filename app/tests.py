@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from factories import *
-import search_algorithm as sa
 import json
 from tasks import *
 from mocks import *
@@ -106,30 +105,6 @@ class SearchAlgorithmCase(TestCase):
         fu2_like4 = LikingFactory(photo=self.photos[4], user=self.flickruser2)
 
 
-    def test_get_recommended_users(self):
-
-        my_favs = Photo.objects.filter(favorited=self.me)
-        users = sa.get_recommended_users(self.me, my_favs)
-        self.assertEqual(len(users), 2)
-
-
-    def test_update_with_weight(self):
-
-        photos = Photo.objects.filter(favorited=self.flickruser2)
-        my_favs = Photo.objects.filter(favorited=self.me)
-        reviewed = Photo.objects.filter(reviewed=self.me)
-        rec_photos = update_with_weight({}, set(photos), my_favs, reviewed)
-        exp_best_photo_id = self.photos[4].id
-        self.assertEqual(rec_photos[exp_best_photo_id], 0.5)
-
-
-    def test_get_recommended_photos(self):
-        my_favs = Photo.objects.filter(favorited=self.me)
-        reviewed = Photo.objects.filter(reviewed=self.me)
-        rec_photos = sa.get_recommended_photos([self.flickruser1, self.flickruser2], my_favs, reviewed)
-        self.assertEqual(rec_photos[0], self.photos[4])
-
-
 class ViewTestCase(TestCase):
 
     def test_get_photo_empty_photos(self):
@@ -137,36 +112,38 @@ class ViewTestCase(TestCase):
         me = FlickrUserFactory.create(nsid='1N01', user=user)
         c = Client()
         c.login(username='test', password='pwd')
-        with mock.patch('app.search_algorithm') as perm_mock:
-            perm_mock.get_recommended_users.return_value = []
-            perm_mock.get_recommended_photos.return_value = []
         response = c.get('/')
         self.assertContains(response, "Photos not found.")
 
 
     def test_get_photo(self):
+        photos = PhotoFactory.create_batch(2)
         user = User.objects.create_user(username='test', password='pwd')
         me = FlickrUserFactory.create(nsid='1N01', user=user)
-        photo = PhotoFactory(id=1, owner='01N01')
+        flickruser = FlickrUserFactory.create(nsid='2N01')
+        like = LikingFactory.create(photo=photos[0], user=me)
+        fu_like1 = LikingFactory.create(photo=photos[0], user=flickruser)
+        fu_like2 = LikingFactory.create(photo=photos[1], user=flickruser)
+        weight = WeightFactory.create(against=me, to=flickruser)
         c = Client()
         c.login(username='test', password='pwd')
-        with mock.patch('app.search_algorithm.get_recommended_photos') as perm_mock:
-            perm_mock.return_value = [photo]
-            response = c.get('/')
+        response = c.get('/')
         reviewed = Photo.objects.filter(reviewed=me)
         self.assertEqual(len(reviewed), 1)
 
 
 
     def test_get_photo_ajax(self):
+        photos = PhotoFactory.create_batch(2)
         user = User.objects.create_user(username='test', password='pwd')
         me = FlickrUserFactory.create(nsid='1N01', user=user)
-        photo = PhotoFactory(id=1, owner='01N01', url='http://google.com')
+        flickruser = FlickrUserFactory.create(nsid='2N01')
+        like = LikingFactory.create(photo=photos[0], user=me)
+        fu_like1 = LikingFactory.create(photo=photos[0], user=flickruser)
+        fu_like2 = LikingFactory.create(photo=photos[1], user=flickruser)
+        weight = WeightFactory.create(against=me, to=flickruser)
         c = Client()
         c.login(username='test', password='pwd')
-        with mock.patch('app.search_algorithm.get_recommended_photos') as perm_mock:
-            perm_mock.return_value = [photo]
-            response = c.get('/', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = c.get('/', HTTP_X_REQUESTED_WITH=u'XMLHttpRequest')
         response = json.loads(response.content)
-        reviewed = Photo.objects.filter(reviewed=me)
-        self.assertEqual(response['id'], 1)
+        self.assertEqual(response['id'], photos[1].id)

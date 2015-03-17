@@ -38,6 +38,14 @@ class ReviewFactory(factory.DjangoModelFactory):
     photo = factory.SubFactory(PhotoFactory)
     date_review = datetime.now()
 
+class WeightFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Weight
+
+    against = factory.SubFactory(FlickrUserFactory)
+    to = factory.SubFactory(FlickrUserFactory)
+    weight = factory.Sequence(lambda n: 1/n)
+
 class MTMFlickrUserFactory(FlickrUserFactory):
     favorited = factory.RelatedFactory(LikingFactory, 'user')
     reviewed = factory.RelatedFactory(ReviewFactory, 'user')
