@@ -81,9 +81,3 @@ def update_photo():
         if created:
             liking.date_faved = dt
             liking.save()
-
-        user_favs = Photo.objects.filter(favorited=_user)
-        rec_users = FlickrUser.objects.filter(favorited__in=user_favs)\
-            .distinct().exclude(id=_user.id)
-        for rec_user in rec_users:
-            update_weight(_user, user_favs, rec_user)
