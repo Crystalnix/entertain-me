@@ -1,26 +1,8 @@
 __author__ = 'anmekin'
 from models import Photo, Weight
 
-def update_with_weight(rec_photos, photos, my_favs, reviewed):
 
-    unseen_photos = list(photos - set(my_favs) - set(reviewed))
-    if not unseen_photos:          # some photos can be empty
-        return rec_photos
-    matches = 0
-    for photo in photos:
-        if photo in my_favs:
-            matches += 1
-    weight_k = float(matches)/len(photos)
-    for photo in unseen_photos:
-        if photo.id in rec_photos:
-            rec_photos[photo.id] += weight_k
-        else:
-            rec_photos.update({photo.id: weight_k})
-    return rec_photos
-
-
-def update_weight(user, user_favs, rec_user):
-    rec_user_favs = Photo.objects.filter(favorited=rec_user)
+def update_weight(user, user_favs, rec_user, rec_user_favs):
     counter = 0
     for photo in user_favs:
         if photo in rec_user_favs:
@@ -28,7 +10,6 @@ def update_weight(user, user_favs, rec_user):
     weight, created = Weight.objects.get_or_create(against=user, to=rec_user)
     weight.weight = float(counter)/len(rec_user_favs)
     weight.save()
-
 
 
 def choose_photo_URL(photo): # has_key

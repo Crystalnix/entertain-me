@@ -13,8 +13,8 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
-    active_users = FlickrUser.objects.filter(user__isnull=False)
     if flickruser is None:
+        active_users = FlickrUser.objects.filter(user__isnull=False)
         photos = Photo.objects.filter(favorited__in=active_users)
         users = FlickrUser.objects.filter(favorited__in=photos).\
             distinct().order_by('last_get_faved')
@@ -48,6 +48,13 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
         if created:
             liking.date_faved = dt
             liking.save()
+
+    flickruser_favs = Photo.objects.filter(favorited=flickruser)
+    rec_users = list(FlickrUser.objects.filter(favorited__in=flickruser_favs).distinct().exclude(id=flickruser.id))
+    for rec_user in rec_users:
+        rec_user_favs = Photo.objects.filter(favorited=rec_user)
+        update_weight(flickruser, flickruser_favs, rec_user, rec_user_favs)
+        update_weight(rec_user, rec_user_favs, flickruser, flickruser_favs)
 
 
 @task(ignore_result=True, name='tasks.update_photo')

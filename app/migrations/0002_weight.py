@@ -15,9 +15,9 @@ class Migration(migrations.Migration):
             name='Weight',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('weight', models.IntegerField(default=0)),
-                ('against', models.ForeignKey(related_name='against', to='app.FlickrUser')),
-                ('to', models.ForeignKey(related_name='to', to='app.FlickrUser')),
+                ('weight', models.FloatField(default=0)),
+                ('against', models.ForeignKey(related_name='against_weight', to='app.FlickrUser')),
+                ('to', models.ForeignKey(related_name='to_weight', to='app.FlickrUser')),
             ],
             options={
             },

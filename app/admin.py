@@ -48,4 +48,4 @@ admin.site.register(FlickrUser, FlickrUserAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Liking)
 admin.site.register(Review)
-
+admin.site.register(Weight)
