@@ -39,6 +39,7 @@ $ vagrant ssh
 Run server:
 ```
 $ cd var/www/entertain_me
+$ python manage.py migrate
 $ python manage.py runserver 0.0.0.0:8000
 ```
 ##How to start without Vagrant:##
@@ -80,6 +81,7 @@ First launch local server:
 $ python manage.py migrate
 $ python manage.py runserver
 ```
+## Other usefull commands ##
 Run celery worker:
 ```
 $ python manage.py celery worker --loglevel=DEBUG -B
