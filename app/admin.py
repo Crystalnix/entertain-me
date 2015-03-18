@@ -3,6 +3,8 @@ from django.shortcuts import render
 from models import *
 from django.contrib.admin.views.decorators import staff_member_required
 
+class WeightAdmin(admin.ModelAdmin):
+    list_display = ('against', 'to', 'weight')
 
 class PhotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'owner', 'show_url', 'last_get_faved')
@@ -13,39 +15,42 @@ class PhotoAdmin(admin.ModelAdmin):
 
 class FlickrUserAdmin(admin.ModelAdmin):
     list_display = ('nsid',
-                    'show_user_username',
-                    'show_user_first_name',
-                    'show_user_last_name',
-                    'show_user_email',
+                    'username',
+                    'first_name',
+                    'last_name',
+                    'email',
                     'last_get_faved')
 
-    def show_user_username(self, obj):
+    def username(self, obj):
         if obj.user:
-            return 'Username: %s' % (obj.user.username)
+            return obj.user.username
         else:
             return ''
+    username.admin_order_field = 'user__username'
 
-    def show_user_first_name(self, obj):
+    def first_name(self, obj):
         if obj.user:
-            return 'First name: %s' % (obj.user.first_name)
+            return obj.user.first_name
         else:
             return ''
+    first_name.admin_order_field = 'user__first_name'
 
-    def show_user_last_name(self, obj):
+    def last_name(self, obj):
         if obj.user:
-            return 'last_name: %s' % (obj.user.last_name)
+            return obj.user.last_name
         else:
             return ''
+    last_name.admin_order_field = '-user__last_name'
 
-    def show_user_email(self, obj):
+    def email(self, obj):
         if obj.user:
-            return 'email: %s' % (obj.user.email)
+            return obj.user.email
         else:
             return ''
-
+    email.admin_order_field = 'user__email'
 
 admin.site.register(FlickrUser, FlickrUserAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Liking)
 admin.site.register(Review)
-admin.site.register(Weight)
+admin.site.register(Weight, WeightAdmin)
