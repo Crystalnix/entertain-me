@@ -24,6 +24,16 @@ class init {
         require => Package['python-pip', 'python-dev'], 
         logoutput => on_failure,
     }
+    
+    exec { 'make-migrations':
+	command => "python /var/www/entertain_me/manage.py makemigrations"
+    }
+
+    exec { 'python_migrate':
+      command => "python /var/www/entertain_me/manage.py migrate",
+      require => Exec['update-apt'] 
+#      path    => $bin,
+    }
 }
 
 class mysql ($root_password = '888968a3', $bin = '/usr/bin:/usr/sbin') {
