@@ -30,8 +30,6 @@ $ sudo apt-get install puppet
 ```
 Launch Vagrant:
 ```
-$ vagrant init
-$ vagrant box add precise32 http://files.vagrantup.com/precise32.box
 $ vagrant up
 $ vagrant provision
 $ vagrant ssh
@@ -39,7 +37,6 @@ $ vagrant ssh
 Run server:
 ```
 $ cd var/www/entertain_me
-$ python manage.py migrate
 $ python manage.py runserver 0.0.0.0:8000
 ```
 ##How to start without Vagrant:##
