@@ -12,4 +12,4 @@ mock==1.0.1
 factory-boy==2.4.1
 coverage==3.7.1
 django-compressor==1.4
-
+gunicorn==19.3.0
