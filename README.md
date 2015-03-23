@@ -1,3 +1,6 @@
+##Demonstration:##
+[Demo](http://entertain-me.crystalnix.com)
+
 ##Prerequisites:##
 - Python 2.7
 - MySQL
@@ -86,4 +89,91 @@ $ python manage.py celery worker --loglevel=DEBUG -B
 Run tests with coverage:
 ```
 $ python manage.py test --with-coverage
+```
+##How to deploy with SSH:##
+Create or update ssh config
+```
+$ nano ~/ssh/config
+```
+Add next settings:
+```
+Host alias_name
+HostName your_domen
+User username
+IdentityFile ~/.ssh/file_with_private_rsa_key
+IdentitiesOnly yes
+```
+Connect to server with SSH:
+```
+$ ssh alias_name
+```
+Install nginx:
+```
+sudo apt-get install nginx
+```
+Create nginx config:
+```
+$ sudo nano /etc/nginx/sites-avalable/entertain-me
+```
+with
+```
+server {
+        server_name your_domen;
+        access_log off;
+
+        location /static/ {
+            alias /path/to/entertain-me/staticfiles/;
+        }
+
+        location / {
+                proxy_pass http://127.0.0.1:8020;
+                proxy_set_header X-Forwarded-Host $server_name;
+                proxy_set_header X-Real-IP $remote_addr;
+                add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+        }
+    }
+```
+Create a symbolic link:
+```
+$ sudo ln -s /etc/nginx/sites-available/hello /etc/nginx/sites-enabled/hello
+```
+Restart Nginx:
+```
+$ sudo service nginx restart 
+```
+Install supervisor:
+```
+sudo apt-get install supervisor
+```
+Clone from repository, set up without Vagrant and create deploy_settings per sample:
+```
+$ git clone git@github.com:Crystalnix/entertain-me.git
+```
+Create script gunicorn_start:
+```
+cd /home/admin/entertain_me/
+source /home/admin/.virtualenvs/entertain_me/bin/activate
+/home/admin/.virtualenvs/entertain_me/bin/gunicorn entertain_me.wsgi:application --bind 127.0.0.1:8020
+```
+Make script executable:
+```
+$ chmod +x gunicorn_start
+```
+Create Supervisor config file:
+```
+$ sudo nano /etc/supervisor/conf.d/hello.conf
+```
+with configs:
+```
+[program:entertain-me]
+directory=/path/to/entertain-me
+user = entertain-me
+command=sh /path/to/entertain-me/gunicorn_start
+stdout_logfile = /var/log/entertain-me/supervisor.log
+redirect_stderr = true
+```
+Update Supervisor:
+```
+$ sudo supervisorctl reread
+$ sudo supervisorctl update
 ```
