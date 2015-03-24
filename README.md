@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Crystalnix/entertain-me.svg)](https://travis-ci.org/Crystalnix/entertain-me)
+[![Coverage Status](https://coveralls.io/repos/Crystalnix/entertain-me/badge.svg?branch=travis)](https://coveralls.io/r/Crystalnix/entertain-me?branch=travis)
 ##Demonstration:##
 [Demo](http://entertain-me.crystalnix.com)
 
