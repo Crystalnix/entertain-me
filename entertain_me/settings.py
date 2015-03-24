@@ -22,7 +22,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-SECRET_KEY = ''
+SECRET_KEY = 'vro=eb!5^-_7^2373ii2tc)g5sad_&%oe=$mnk^h7apgbodia+'
 
 ALLOWED_HOSTS = []
 
@@ -157,6 +157,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=app',
+    '--cover-html',
 ]
 
 # compressor
