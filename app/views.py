@@ -1,6 +1,3 @@
-"""
-Module for views
-"""
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth import logout as auth_logout
@@ -12,6 +9,10 @@ from tasks import update_flickr_user
 
 
 def oauth_callback(request):
+    """
+      | This function fetch Flickr auth response and create or update info of successfully authorized user.
+      | You can't call it manually.
+    """
     try:
         nsid = request.user.social_auth.first().uid
     except AttributeError:
@@ -26,8 +27,8 @@ def oauth_callback(request):
 @login_required()
 def recommended(request):
     """
-    Algorithm which suggests photos to user based on user's likes
-    and likes of people who also liked the same as user did
+      | Main page with recommended photos and possibility like it or look at next photo.
+      | Work with GET and AJAX requests.
     """
     me = FlickrUser.objects.get(user=request.user)
     my_favs = Photo.objects.filter(favorited=me)
@@ -50,9 +51,16 @@ def recommended(request):
 
 
 def auth(request):
+    """
+      |  Page for unauthorized users.
+      |  You can authorize with Flickr here.
+    """
     return render(request, 'auth.html')
 
 
 def logout(request):
+    """
+      |  Logout.
+    """
     auth_logout(request)
     return HttpResponseRedirect('/')

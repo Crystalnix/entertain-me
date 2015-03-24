@@ -1,3 +1,6 @@
+"""
+Module for celery tasks.
+"""
 __author__ = 'anmekin'
 from celery import task
 from django.conf import settings
@@ -10,6 +13,9 @@ import time
 
 @task(ignore_result=True, name='tasks.update_flickr_user')
 def update_flickr_user(min_fave_date=0, flickruser=None):
+    """
+    Update Flickr user like and him Weight relationships. Use FlickrAPI.
+    """
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
@@ -24,7 +30,6 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
             raise RuntimeError("Empty flickrUsers list")
 
     print "I choose flickrUser with id: %s" % flickruser.nsid
-    # user = FlickrUser.objects.get(user_id=user_id)
     if flickruser.last_get_faved and not min_fave_date:
         min_fave_date = flickruser.last_get_faved
     photos = flickr.favorites.getList(user_id=flickruser.nsid,
@@ -59,6 +64,9 @@ def update_flickr_user(min_fave_date=0, flickruser=None):
 
 @task(ignore_result=True, name='tasks.update_photo')
 def update_photo():
+    """
+    Update photo favorited. Use FlickrAPI.
+    """
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
     flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')

@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Models &mdash; Entertain-me 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Entertain-me 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Views" href="views.html" />
+    <link rel="prev" title="Welcome to Entertain-me’s documentation!" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="Views"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to Entertain-me’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Entertain-me 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-app.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-app.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="app.models.FlickrUser">
+<em class="property">class </em><code class="descclassname">app.models.</code><code class="descname">FlickrUser</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.models.FlickrUser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Model for Flickr users:</dt>
+<dd><div class="first last line-block">
+<div class="line">id - nsid on Flickr;</div>
+<div class="line">owner - owner&#8217;s nsid;</div>
+<div class="line">last_get_faved - datetime of last calling update_flickr_user() in Unix timestamp</div>
+<div class="line">user - related User model from this application</div>
+<div class="line">favorited - M2M relationship with photos which he liked</div>
+<div class="line">reviewed - M2M relationship with photos which he already seen</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="app.models.Liking">
+<em class="property">class </em><code class="descclassname">app.models.</code><code class="descname">Liking</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.models.Liking" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Model which keep date/time of user&#8217;s likes:</dt>
+<dd><div class="first last line-block">
+<div class="line">date_faved - datetime in readable Date/time</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="app.models.Photo">
+<em class="property">class </em><code class="descclassname">app.models.</code><code class="descname">Photo</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.models.Photo" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Model for Flickr photos:</dt>
+<dd><div class="first last line-block">
+<div class="line">id - id photo on Flickr;</div>
+<div class="line">owner - owner&#8217;s nsid;</div>
+<div class="line">last_get_faved - datetime of last calling update_photo() in Unix timestamp</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="app.models.Review">
+<em class="property">class </em><code class="descclassname">app.models.</code><code class="descname">Review</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.models.Review" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Model which keep date/time of user&#8217;s viewed photos:</dt>
+<dd><div class="first last line-block">
+<div class="line">date_view - datetime in readable Date/time</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="app.models.Weight">
+<em class="property">class </em><code class="descclassname">app.models.</code><code class="descname">Weight</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.models.Weight" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Model which keep ratio of interesting from AGAINST user to TO user:</dt>
+<dd><div class="first last line-block">
+<div class="line">weight - ratio in float format</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Welcome to Entertain-me&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="views.html"
+                        title="next chapter">Views</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/modules/models.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Andrey Mekin.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
+      
+      |
+      <a href="../_sources/modules/models.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
