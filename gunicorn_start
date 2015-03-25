@@ -1,4 +1,2 @@
-cd /home/admin/entertain_me/
-source /home/admin/.virtualenvs/entertain_me/bin/activate
-/home/admin/.virtualenvs/entertain_me/bin/gunicorn entertain_me.wsgi:application --bind 127.0.0.1:8020
+exec /home/admin/.virtualenvs/entertain_me/bin/gunicorn entertain_me.wsgi:application --bind 127.0.0.1:8020
 
