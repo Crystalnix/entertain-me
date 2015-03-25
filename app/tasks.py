@@ -15,6 +15,8 @@ import time
 def update_flickr_user(min_fave_date=0, flickruser=None):
     """
     Update Flickr user like and him Weight relationships. Use FlickrAPI.
+      |  flickruser -  FlickrUser which you wanna update.
+      |  min_fave_date - low limit of datetime liked photos; Unix timestamp.
     """
     api_key = settings.SOCIAL_AUTH_FLICKR_KEY
     api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
