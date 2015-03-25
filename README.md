@@ -92,6 +92,11 @@ Run tests with coverage:
 ```
 $ python manage.py test --with-coverage
 ```
+Generate html with documentation:
+```
+$ cd docs/
+$ make html
+```
 ##How to deploy with SSH:##
 Create or update ssh config
 ```
