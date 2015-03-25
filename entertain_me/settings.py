@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_nose',
     'compressor',
+    'raven.contrib.django.raven_compat'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -166,8 +167,16 @@ COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
 
-
 #
+
+#Sentry & raven
+#SENTRY_CLIENT = 'raven.contrib.django.raven_compat.DjangoClient'
+
+RAVEN_CONFIG = {
+    'dsn':'https://d0cc19623fb64c5eb4c3f3694a20b279:a7228f01811f4ba093c9f7ce23fed2b0@app.getsentry.com/40353',
+}
+
+
 try:
     from local_settings import *
 except ImportError:

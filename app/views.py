@@ -64,3 +64,7 @@ def logout(request):
     """
     auth_logout(request)
     return HttpResponseRedirect('/')
+
+
+def test_exception(request):
+    raise Exception
