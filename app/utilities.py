@@ -8,6 +8,10 @@ from models import Photo, Weight
 def update_weight(user, user_favs, rec_user, rec_user_favs):
     """
     Calculate weight between two users on base of photos which they liked
+      |  user - from Flickr user
+      |  user_favs - QuerySet of liked photos by user
+      |  rec_user - to Flickr user
+      |  rec_user_favs - QuerySet of liked photos by rec_user
     """
     counter = 0
     for photo in user_favs:
@@ -21,6 +25,7 @@ def update_weight(user, user_favs, rec_user, rec_user_favs):
 def choose_photo_URL(photo):
     """
     Choose most suitable url of photo or None if photo too small.
+    photo - Photo instance
     """
     try:
         url = photo['url_l']
