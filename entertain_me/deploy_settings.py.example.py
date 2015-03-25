@@ -21,6 +21,8 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += ('gunicorn',)
+
 USE_X_FORWARDED_HOST = True
 
 #social_auth
