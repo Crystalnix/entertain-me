@@ -1,0 +1,2 @@
+exec /home/admin/.virtualenvs/entertain_me/bin/gunicorn entertain_me.wsgi:application --bind 127.0.0.1:8020
+

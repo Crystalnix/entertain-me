@@ -67,4 +67,8 @@ def logout(request):
 
 
 def test_exception(request):
-    raise Exception
+    pass
+    # try:
+    #     raise Exception
+    # except Exception:
+    #     return HttpResponse("OK")
