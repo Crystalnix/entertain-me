@@ -3,14 +3,18 @@
 {%  block main_container %}
     <div class="container text-center">
     {% if error_msg %}
-        <p> {{ error_msg }}</p>
+        <p>
+            {{ error_msg }}
+            <a href="{% url 'update' %}"><button class="btn btn-danger">Login again</button></a>
+        </p>
     {% else %}
-        <div id="rec-photo">
-            <p>Photo identifier: {{ photo.id }}</p>
+        <div id="rec-photo" data-id="{{ photo.id }}">
+{#            <p class="hide">Photo identifier: {{ photo.id }}</p>#}
             <img src="{{ photo.url }}" alt="Interest photo"/> <br/>
         </div>
         <div class="btn-group">
-            <button class="btn-primary" id="btn-next-img">Entertain me!</button>
+            <button class="btn-info btn-lg" disabled=True id="btn-like"><span class="glyphicon glyphicon-star"></span></button>
+            <button class="btn-success btn-lg" id="btn-next-img"><span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
     {% endif %}
     </div>

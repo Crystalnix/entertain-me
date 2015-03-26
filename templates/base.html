@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-inverse" role="navigation">
-            <ul class="nav navbar-nav text-center">
+            <ul class="nav navbar-nav navbar-right text-center">
                 {% if user.is_authenticated %}
                     <li>
                          <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>

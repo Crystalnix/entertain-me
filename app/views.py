@@ -41,8 +41,7 @@ def recommended(request):
         review, created = Review.objects.get_or_create(photo=rec_photo, user=me)
     else:
         msg = "Photos not found. Probably you didn't like anything on Flickr. " \
-              "Try to like anything and reauthentication on this website. " \
-              "Also you can forget to run workers."
+              "Try to like anything and "
         return render(request, 'recommended.html', {'error_msg': msg})
     if request.is_ajax():
         response = {'url': rec_photo.url, 'id': rec_photo.id}
@@ -65,6 +64,18 @@ def logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
 
+
+def update(request):
+    # Need some protection
+    me = FlickrUser.objects.get(user=request.user)
+    update_flickr_user(flickruser=me)
+    return HttpResponseRedirect('/')
+
+
+def test(request):
+    msg = "Photos not found. Probably you didn't like anything on Flickr. " \
+          "Try to like anything and "
+    return render(request, 'recommended.html', {'error_msg': msg})
 
 def test_exception(request):
     pass
