@@ -156,16 +156,6 @@ Clone from repository, set up without Vagrant and create deploy_settings per sam
 ```
 $ git clone git@github.com:Crystalnix/entertain-me.git
 ```
-Create script gunicorn_start:
-```
-cd /home/admin/entertain_me/
-source /home/admin/.virtualenvs/entertain_me/bin/activate
-/home/admin/.virtualenvs/entertain_me/bin/gunicorn entertain_me.wsgi:application --bind 127.0.0.1:8020
-```
-Make script executable:
-```
-$ chmod +x gunicorn_start
-```
 Create Supervisor config file:
 ```
 $ sudo nano /etc/supervisor/conf.d/hello.conf
@@ -174,7 +164,7 @@ with configs:
 ```
 [program:entertain-me]
 directory=/path/to/entertain-me
-user = entertain-me
+user = nobodya
 command=sh /path/to/entertain-me/gunicorn_start
 stdout_logfile = /var/log/entertain-me/supervisor.log
 redirect_stderr = true
