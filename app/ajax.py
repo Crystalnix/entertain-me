@@ -9,16 +9,17 @@ from django.http import JsonResponse, HttpResponse
 
 def like(request):
     if request.is_ajax():
-    #     id = data #!!!!
     # Try to find photo in user_favorites
-        id = '6304393890'
+        id = request.GET['id']
         api_key = settings.SOCIAL_AUTH_FLICKR_KEY
         api_secret = settings.SOCIAL_AUTH_FLICKR_SECRET
         d = request.user.social_auth.first().tokens
         token = FlickrAccessToken(token=d['oauth_token'], token_secret=d['oauth_token_secret'], access_level=u'write',
                  fullname=d['fullname'], username=d['username'], user_nsid=d['user_nsid'])
-        flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json', username=u'anmekin', token=token) # , token=u'72157650494242720-81ccb4e70d57cac9'
-        flickr.favorites.add(photo_id=id)
+        flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json', token=token) # , token=u'72157650494242720-81ccb4e70d57cac9'
+        response = flickr.favorites.add(photo_id=id)
+        if response['stat'] != 'ok':
+            return JsonResponse({'stat': response["message"]})
         me = FlickrUser.objects.get(user=request.user)
         photo = Photo.objects.get(id=id)
         dt = timezone.now().replace(second=0, microsecond=0)
