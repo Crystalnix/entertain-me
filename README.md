@@ -110,67 +110,17 @@ User username
 IdentityFile ~/.ssh/file_with_private_rsa_key
 IdentitiesOnly yes
 ```
-Connect to server with SSH:
-```
-$ ssh alias_name
-```
-Install nginx:
-```
-sudo apt-get install nginx
-```
-Create nginx config:
-```
-$ sudo nano /etc/nginx/sites-avalable/entertain-me
-```
-with
-```
-server {
-        server_name your_domen;
-        access_log off;
 
-        location /static/ {
-            alias /path/to/entertain-me/staticfiles/;
-        }
+Configure files in the folder deploy: entertain-me(nginx config), entertain-me.conf(supervisor config). 
 
-        location / {
-                proxy_pass http://127.0.0.1:8020;
-                proxy_set_header X-Forwarded-Host $server_name;
-                proxy_set_header X-Real-IP $remote_addr;
-                add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
-        }
-    }
+In fabfile.py configure hosts and PROJECT_PATH. Use automathic deploy script (from PROJECT_PATH): 
 ```
-Create a symbolic link:
+$ fab deploy
 ```
-$ sudo ln -s /etc/nginx/sites-available/hello /etc/nginx/sites-enabled/hello
+Now you can manage server with next comands:
 ```
-Restart Nginx:
-```
-$ sudo service nginx restart 
-```
-Install supervisor:
-```
-sudo apt-get install supervisor
-```
-Clone from repository, set up without Vagrant and create deploy_settings per sample:
-```
-$ git clone git@github.com:Crystalnix/entertain-me.git
-```
-Create Supervisor config file:
-```
-$ sudo nano /etc/supervisor/conf.d/hello.conf
-```
-with configs:
-```
-[program:entertain-me]
-directory=/path/to/entertain-me
-user = nobodya
-command=sh /path/to/entertain-me/gunicorn_start
-stdout_logfile = /var/log/entertain-me/supervisor.log
-redirect_stderr = true
-```
-Update Supervisor:
-```
-$ sudo supervisorctl reread
-$ sudo supervisorctl update
+$ fab status_server # get current status
+$ fab start_server 
+$ fab stop_server
+$ fab run_test_server # run server with debug
 ```
