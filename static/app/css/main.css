@@ -6,6 +6,11 @@
     padding-right: 20px;
 }
 
+img.resize{
+    width: auto;
+    height: 700px;
+}
+
 /*#rec-photo{*/
     /*height: 1000px;*/
 /*}*/

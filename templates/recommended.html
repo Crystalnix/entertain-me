@@ -5,12 +5,12 @@
     {% if error_msg %}
         <p>
             {{ error_msg }}
-            <a href="{% url 'update' %}"><button class="btn btn-danger">Login again</button></a>
+            <a href="{% url 'update' %}"><button class="btn btn-danger">Try again</button></a>
         </p>
     {% else %}
         <div id="rec-photo" data-id="{{ photo.id }}">
 {#            <p class="hide">Photo identifier: {{ photo.id }}</p>#}
-            <img src="{{ photo.url }}" alt="Interest photo"/> <br/>
+            <img class="resize" src="{{ photo.url }}" alt="Interest photo"/> <br/>
         </div>
         <div class="btn-group">
             <button class="btn-info btn-lg" id="btn-like"><span class="glyphicon glyphicon-star"></span></button>

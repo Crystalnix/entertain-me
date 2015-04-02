@@ -6,6 +6,7 @@ from utilities import *
 from models import *
 from django.db.models import Sum
 from tasks import update_flickr_user
+import datetime
 
 
 def oauth_callback(request):
@@ -30,11 +31,12 @@ def recommended(request):
       | Main page with recommended photos and possibility like it or look at next photo.
       | Work with GET and AJAX requests.
     """
+    delta_time = datetime.datetime.now() - datetime.timedelta(days=7)
     me = FlickrUser.objects.get(user=request.user)
     my_favs = Photo.objects.filter(favorited=me)
     reviewed = Photo.objects.filter(reviewed=me)
     rec_users = FlickrUser.objects.filter(favorited__in=my_favs).distinct().exclude(id=me.id)
-    rec_photo = Photo.objects.filter(favorited__in=rec_users).exclude(id__in=my_favs | reviewed).\
+    rec_photo = Photo.objects.filter(favorited__in=rec_users, liking__date_faved__gt=delta_time).exclude(id__in=my_favs | reviewed).\
         filter(favorited__to_weight__against=me).distinct().\
         annotate(sum=Sum('favorited__to_weight__weight')).order_by('-sum').first()
     if rec_photo:
