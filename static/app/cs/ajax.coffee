@@ -2,13 +2,12 @@ jQuery ->
   $('#btn-next-img').click(
     ->
       make_active = () ->
-        $('#btn-next-img span').toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-refresh')
         $('#btn-next-img').prop('disabled', false)
         $('#btn-like').prop('hidden', false)
         $('#btn-like').prop('disabled', false)
-      $(this).children('span').toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-refresh')
       $(this).prop('disabled', true)
       $('#btn-like').prop('disabled', true)
+      $('#rec-photo img').attr('src', '/static/app/gif/ajaxSpinner.gif')
       $.ajax '/',
                type: 'GET'
                dataType: 'json'
@@ -17,7 +16,7 @@ jQuery ->
                  $('#rec-photo').attr('data-id', data['id'])
                  $('#rec-photo img').attr('src', data['url'])
                  #alert $(this).children('span').attr('class')
-                 setTimeout(make_active, 3000)
+                 make_active()
   )
   $('#btn-like').click(
     ->

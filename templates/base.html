@@ -18,11 +18,22 @@
             <ul class="nav navbar-nav navbar-right text-center">
                 {% if user.is_authenticated %}
                     <li>
-                         <a href='{% url 'logout' %}'>Logout ({{ user.username }})</a>
+                        <a>Hello, {{ user.username }}</a>
+                    </li>
+                    <li>
+                        <p class="navbar-btn">
+                            <a class="btn btn-danger" href='{% url 'logout' %}'>
+                                Logout
+                            </a>
+                        </p>
                     </li>
                 {% else %}
                     <li>
-                        <a href='{% url 'social:begin' backend="flickr" %}'>Authorization</a>
+                        <p class="navbar-btn">
+                            <a class="btn btn-danger" href='{% url 'social:begin' backend="flickr" %}'>
+                                Authorization
+                            </a>
+                        </p>
                     </li>
                 {% endif %}
             </ul>
