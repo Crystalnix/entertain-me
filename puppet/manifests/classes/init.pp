@@ -11,7 +11,7 @@ class init {
 
     # Let's install the dependecies
     package {
-        ["python", "python-dev", "python-pip", "mysql-server", "rabbitmq-server", "coffeescript"]:
+        ["python", "python-dev", "python-pip", "mysql-server","libmysqlclient-dev", "rabbitmq-server", "coffeescript"]:
         ensure => installed,
         require => Exec['update-apt'] 
     }
@@ -20,20 +20,12 @@ class init {
     exec { "pip-install-requirements":
         command => "sudo /usr/bin/pip install -r $PROJ_DIR/requirements.txt",
         tries => 2,
-        timeout => 600,
-        require => Package['python-pip', 'python-dev'], 
-        logoutput => on_failure,
+        timeout => 1800,
+        require => Package["python", "python-dev", "python-pip", "mysql-server","libmysqlclient-dev", "rabbitmq-server", "coffeescript"], 
+        logoutput => on_failure
     }
     
-    exec { 'make-migrations':
-	command => "python /var/www/entertain_me/manage.py makemigrations"
-    }
 
-    exec { 'python_migrate':
-      command => "python /var/www/entertain_me/manage.py migrate",
-      require => Exec['update-apt'] 
-#      path    => $bin,
-    }
 }
 
 class mysql ($root_password = '888968a3', $bin = '/usr/bin:/usr/sbin') {
@@ -51,6 +43,18 @@ class mysql ($root_password = '888968a3', $bin = '/usr/bin:/usr/sbin') {
     unless  => "mysqladmin -uroot -p${root_password} status",
     command => "mysqladmin -uroot password ${root_password}",
     path    => $bin,
-    require => Service['mysql::mysql'],
+    require => Package["python", "python-dev", "python-pip", "mysql-server","libmysqlclient-dev", "rabbitmq-server", "coffeescript"]
+  }
+  include init
+}
+
+class migrations{
+  exec { 'make-migrations':
+    command => "python /var/www/entertain_me/manage.py makemigrations",
+    require => Class['mysql'] 
+  }
+  exec { 'python_migrate':
+    command => "python /var/www/entertain_me/manage.py migrate",
+    require => Exec['make-migrations'] 
   }
 }

@@ -9,6 +9,9 @@ Exec {
 }
 
 class dev {
+  class {
+      init:;
+  }
   class {'mysql': }
   mysql::db::create {'django_db': }
   mysql::user::grant { 'djangouser':
@@ -16,9 +19,6 @@ class dev {
     host     => 'localhost',
     password => '888968',
     database => 'django_db',
-  }
-  class {
-      init:;
   }
 }
 
