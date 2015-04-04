@@ -15,11 +15,12 @@ img.resize{
 #rec-photo{
     width: 1140px;
     height: 700px;
+    position:relative;
 }
 #loader{
-    position: relative;
+    position: absolute;
 
-    bottom: 50%;
+    top: 20%;
     height: 10%;
 /*     z-index:999; */
 }
