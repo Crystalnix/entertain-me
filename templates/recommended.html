@@ -10,7 +10,8 @@
     {% else %}
         <div id="rec-photo" data-id="{{ photo.id }}">
 {#            <p class="hide">Photo identifier: {{ photo.id }}</p>#}
-            <img class="resize" src="{{ photo.url }}" alt="Interest photo"/> <br/>
+            <img id="rec-img" class="resize" src="{{ photo.url }}" alt="Interest photo"/> <br/>
+            <img id="loader" src="{% static "app/gif/ajaxSpinner.gif" %}" hidden/>
         </div>
         <div class="btn-group">
             <button class="btn-info btn-lg" id="btn-like"><span class="glyphicon glyphicon-star"></span></button>

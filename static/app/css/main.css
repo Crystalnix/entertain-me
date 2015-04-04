@@ -7,8 +7,21 @@
 }
 
 img.resize{
-    width: auto;
+    /*width: auto;*/
+    max-width: 1140px;
+    max-height: 700px;
+}
+
+#rec-photo{
+    width: 1140px;
     height: 700px;
+}
+#loader{
+    position: relative;
+
+    bottom: 50%;
+    height: 10%;
+/*     z-index:999; */
 }
 
 /*#rec-photo{*/

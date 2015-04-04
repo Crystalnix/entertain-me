@@ -22,7 +22,7 @@
                     </li>
                     <li>
                         <p class="navbar-btn">
-                            <a class="btn btn-danger" href='{% url 'logout' %}'>
+                            <a class="btn btn-default" href='{% url 'logout' %}'>
                                 Logout
                             </a>
                         </p>
@@ -30,7 +30,7 @@
                 {% else %}
                     <li>
                         <p class="navbar-btn">
-                            <a class="btn btn-danger" href='{% url 'social:begin' backend="flickr" %}'>
+                            <a class="btn btn-default" href='{% url 'social:begin' backend="flickr" %}'>
                                 Authorization
                             </a>
                         </p>

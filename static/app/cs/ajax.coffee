@@ -5,17 +5,17 @@ jQuery ->
         $('#btn-next-img').prop('disabled', false)
         $('#btn-like').prop('hidden', false)
         $('#btn-like').prop('disabled', false)
+        $('#loader').prop('hidden', true)
       $(this).prop('disabled', true)
       $('#btn-like').prop('disabled', true)
-      $('#rec-photo img').attr('src', '/static/app/gif/ajaxSpinner.gif')
+      $('#loader').prop('hidden', false)
       $.ajax '/',
                type: 'GET'
                dataType: 'json'
                error: (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: #{textStatus}"
                success: (data, textStatus, jqXHR) ->
                  $('#rec-photo').attr('data-id', data['id'])
-                 $('#rec-photo img').attr('src', data['url'])
-                 #alert $(this).children('span').attr('class')
+                 $('#rec-img').attr('src', data['url'])
                  make_active()
   )
   $('#btn-like').click(
