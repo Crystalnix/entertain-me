@@ -19,9 +19,9 @@ img.resize{
 }
 #loader{
     position: absolute;
-
+    left: 47%;
     top: 20%;
-    height: 10%;
+    width: 6%;
 /*     z-index:999; */
 }
 
