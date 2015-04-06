@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "forwarded_port", guest: 8000, host: 8000
 
-  config.vm.synced_folder "../entertain_me", "/var/www/entertain_me"
+  config.vm.synced_folder ".", "/var/www/entertain_me"
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
