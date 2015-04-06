@@ -41,7 +41,7 @@ $ vagrant ssh
 ```
 Run server:
 ```
-$ cd var/www/entertain_me
+$ cd /var/www/entertain_me
 $ python manage.py runserver 0.0.0.0:8000
 ```
 ##How to start without Vagrant:##
